@@ -1,8 +1,7 @@
 import { searchCep } from './helpers/cepFunctions';
 import { fetchProductsList } from './helpers/fetchFunctions';
-import { createProductElement } from './helpers/shopFunctions';
+import { createCustomElement, createProductElement } from './helpers/shopFunctions';
 import { addLoading, removeLoading } from './helpers/loadingFunctions';
-import createErrorElement from './helpers/errorFunctions';
 import './style.css';
 
 document.querySelector('.cep-button').addEventListener('click', searchCep);
@@ -18,7 +17,11 @@ const createProductList = async () => {
       productsSection.appendChild(productElement);
     });
   } catch (error) {
-    const errorElement = createErrorElement();
+    const errorElement = createCustomElement(
+      'h3',
+      'error',
+      'Algum erro ocorreu, recarregue a página e tente novamente',
+    );
     productsSection.appendChild(errorElement);
   } finally {
     removeLoading();
