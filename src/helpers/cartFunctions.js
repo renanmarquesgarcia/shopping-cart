@@ -1,3 +1,5 @@
+import { fetchProduct } from './fetchFunctions';
+
 /**
  * Função que retorna todos os itens do carrinho salvos no localStorage.
  * @returns {Array} Itens de ids salvos do carrinho ou array vazio.
@@ -30,4 +32,18 @@ export const removeCartID = (id) => {
   const indexProduct = cartProducts.indexOf(id);
   cartProducts.splice(indexProduct, 1);
   localStorage.setItem('cartProducts', JSON.stringify(cartProducts));
+};
+
+export const updateCartPrice = async () => {
+  const totalPriceElement = document.querySelector('.total-price');
+  const ProductsIdsLS = getSavedCartIDs();
+  const prices = await Promise.all(
+    ProductsIdsLS.map(async (productId) => {
+      const { price } = await fetchProduct(productId);
+      return price;
+    }),
+  );
+
+  const totalPrice = prices.reduce((acc, curPrice) => acc + curPrice, 0);
+  totalPriceElement.innerHTML = totalPrice.toFixed(2);
 };

@@ -6,8 +6,12 @@ import {
   createProductElement,
 } from './helpers/shopFunctions';
 import { addLoading, removeLoading } from './helpers/loadingFunctions';
+import {
+  getSavedCartIDs,
+  saveCartID,
+  updateCartPrice,
+} from './helpers/cartFunctions';
 import './style.css';
-import { getSavedCartIDs, saveCartID } from './helpers/cartFunctions';
 
 document.querySelector('.cep-button').addEventListener('click', searchCep);
 
@@ -30,7 +34,10 @@ const createProductList = async () => {
       const productElement = createProductElement({ id, title, thumbnail, price });
       productsSection.appendChild(productElement);
 
-      productElement.addEventListener('click', () => addProductToCart(id));
+      productElement.addEventListener('click', () => {
+        addProductToCart(id);
+        updateCartPrice();
+      });
     });
   } catch (error) {
     const errorElement = createCustomElement(
@@ -58,3 +65,4 @@ const renderCartProductsFromLS = async () => {
 
 createProductList();
 renderCartProductsFromLS();
+updateCartPrice();
