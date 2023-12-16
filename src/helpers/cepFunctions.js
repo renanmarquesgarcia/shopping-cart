@@ -9,6 +9,8 @@ export const getAddress = async (cep) => {
       fetch(`${BRASIL_API}${cep}`),
     ]);
 
+    if (!addressInfo.ok) throw new Error();
+
     const data = await addressInfo.json();
     return data;
   } catch (error) {
